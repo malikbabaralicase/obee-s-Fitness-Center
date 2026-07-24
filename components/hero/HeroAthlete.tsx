@@ -5,11 +5,21 @@ import { gsap } from "gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
- * Layer 2 — the cinematic athlete video, anchored to the right side of the
- * hero (~60% desktop, intelligently reduced on smaller screens). Blended into
- * the atmospheric background with edge-feathered gradient overlays rather
- * than a hard rectangular crop, so it reads as one continuous scene instead
- * of "a video pasted on a page". Never overlaps the left-side copy.
+ * Layer 2 — the cinematic athlete video.
+ *
+ * Below "md" (1024px — phones AND portrait tablets, which share a tall,
+ * narrow viewport aspect) it renders as a full-width band anchored to the
+ * bottom of the hero, well clear of the text above it. A tall/narrow
+ * right-anchored crop at that aspect ratio would force object-cover to zoom
+ * in extremely tight, showing little more than a sliver of the frame — which
+ * is what caused the earlier "abstract ring" look on phones (that was
+ * actually an over-zoomed crop of the dumbbell in this same video, not the
+ * old sculpture).
+ *
+ * At "md" and up (reliably landscape: tablets-landscape, laptops, desktops)
+ * it switches to the right-anchored, full-height treatment. Both variants
+ * share the same edge-feathered gradient blending so the video reads as one
+ * continuous cinematic scene rather than "a video pasted on a page".
  */
 export default function HeroAthlete() {
   const reduced = useReducedMotion();
@@ -89,7 +99,7 @@ export default function HeroAthlete() {
   return (
     <div
       ref={wrapRef}
-      className="pointer-events-none absolute inset-x-0 bottom-0 h-[50%] w-full opacity-0 will-change-transform xs:inset-x-auto xs:right-0 xs:top-0 xs:h-full xs:w-[62vw] xs:max-w-[1000px] sm:w-[58vw] md:w-[56vw] lg:w-[55vw] xl:w-[52vw]"
+      className="pointer-events-none absolute inset-x-0 bottom-0 h-[44%] w-full opacity-0 will-change-transform md:inset-x-auto md:right-0 md:top-0 md:h-full md:w-[56vw] md:max-w-[1000px] lg:w-[55vw] xl:w-[52vw]"
     >
       <div
         data-cursor-athlete
@@ -98,7 +108,7 @@ export default function HeroAthlete() {
         {useVideo && !reduced ? (
           <video
             ref={videoRef}
-            className="h-full w-full object-cover object-[80%_center] [transform:translateZ(0)] will-change-transform"
+            className="h-full w-full object-cover object-[78%_center] [transform:translateZ(0)] will-change-transform"
             poster="/assets/hero-athlete-poster.jpg"
             autoPlay
             muted
@@ -107,8 +117,11 @@ export default function HeroAthlete() {
             preload="metadata"
             onError={() => setUseVideo(false)}
           >
-            <source media="(max-width: 767px)" src="/assets/hero-athlete-mobile.webm" type="video/webm" />
-            <source media="(max-width: 767px)" src="/assets/hero-athlete-mobile.mp4" type="video/mp4" />
+            {/* Below the "md" breakpoint (1024px) — matches the bottom-band layout above.
+                Covers phones AND portrait tablets, which share the same tall,
+                narrow aspect that needs the lighter, less-cropped encode. */}
+            <source media="(max-width: 1023px)" src="/assets/hero-athlete-mobile.webm" type="video/webm" />
+            <source media="(max-width: 1023px)" src="/assets/hero-athlete-mobile.mp4" type="video/mp4" />
             <source src="/assets/hero-athlete.webm" type="video/webm" />
             <source src="/assets/hero-athlete.mp4" type="video/mp4" />
           </video>
@@ -117,14 +130,14 @@ export default function HeroAthlete() {
           <img
             src="/assets/hero-athlete-poster.jpg"
             alt="Athlete training at Obee's Fitness Center"
-            className="h-full w-full object-cover object-[80%_center] [transform:translateZ(0)]"
+            className="h-full w-full object-cover object-[78%_center] [transform:translateZ(0)]"
           />
         )}
 
         {/* Cinematic edge blending — no visible rectangular edges. */}
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-black to-transparent" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%] bg-gradient-to-t from-black to-transparent" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[16%] bg-gradient-to-b from-black/55 to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-[36%] bg-gradient-to-r from-black to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-black to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[26%] bg-gradient-to-b from-black/65 to-transparent md:h-[16%] md:from-black/55" />
         <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-[8%] bg-gradient-to-l from-black/45 to-transparent" />
       </div>
     </div>
