@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import HeroAtmosphere from "@/components/hero/HeroAtmosphere";
 import HeroAthlete from "@/components/hero/HeroAthlete";
 import MagneticButton from "@/components/ui/MagneticButton";
 import ScrollIndicator from "@/components/ui/ScrollIndicator";
@@ -16,7 +15,6 @@ const headline = ["Train", "Like It", "Matters."];
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const atmosphereRef = useRef<HTMLDivElement>(null);
   const athleteRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,15 +22,7 @@ export default function Hero() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Cinematic load: the atmosphere settles from a slight zoom.
-      gsap.fromTo(atmosphereRef.current, { scale: 1.14 }, { scale: 1, duration: 2.4, ease: "power2.out" });
-
-      // Scroll storytelling: background drifts slowly, foreground moves faster.
-      gsap.to(atmosphereRef.current, {
-        yPercent: 14,
-        ease: "none",
-        scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: true },
-      });
+      // Scroll storytelling: the athlete video drifts slightly on scroll.
       gsap.to(athleteRef.current, {
         yPercent: -12,
         ease: "none",
@@ -49,12 +39,7 @@ export default function Hero() {
       id="hero"
       className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden bg-black"
     >
-      {/* Layer 1 — atmospheric background */}
-      <div ref={atmosphereRef} className="absolute inset-0 z-0 will-change-transform">
-        <HeroAtmosphere />
-      </div>
-
-      {/* Layer 2 — foreground athlete video */}
+      {/* Foreground athlete video — the section's own bg-black is the base layer */}
       <div ref={athleteRef} className="absolute inset-0 z-[1] will-change-transform">
         <HeroAthlete />
       </div>
