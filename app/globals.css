@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────
+   Design tokens — amber re-skin of the NVIDIA design system.
+   Single accent (molten amber/gold); everything else monochrome.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Accent (the only color in the system) */
+  --accent: #e8b04b;
+  --accent-dark: #c8912f;
+  --accent-pale: #f5d68a;
+
+  /* Surfaces */
+  --canvas: #ffffff;
+  --surface-soft: #f7f7f7;
+  --surface-dark: #000000;
+  --surface-elevated: #0d0d0d;
+
+  /* Hairlines */
+  --hairline: #cccccc;
+  --hairline-dark: #333333;
+
+  /* Text */
+  --ink: #000000;
+  --body: #1a1a1a;
+  --mute: #757575;
+  --on-dark: #ffffff;
+  --on-dark-mute: rgba(255, 255, 255, 0.7);
+
+  /* Semantic */
+  --error: #e52020;
+  --success: #3f8500;
+
+  /* Radius */
+  --r-sm: 2px;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--hairline);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  /* Lenis handles smoothing; disable native when active */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--surface-dark);
+    color: var(--on-dark);
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* Focus — the amber ring is the system's single focus signal */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--r-sm);
+  }
+
+  /* Custom scrollbar on dark canvas */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 0;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-dark);
+  }
+}
+
+@layer components {
+  /* Section vertical rhythm — 64/48/32 across breakpoints */
+  .section-pad {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  @media (min-width: 768px) {
+    .section-pad {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .section-pad {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+
+  .container-content {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (min-width: 1920px) {
+    .container-content {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
+
+  /* Eyebrow label — amber, uppercase, tracked */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+  }
+
+  /* Hairline card on dark surfaces */
+  .card-dark {
+    position: relative;
+    background: var(--surface-elevated);
+    border: 1px solid var(--hairline-dark);
+    border-radius: var(--r-sm);
+  }
+
+  /* Frosted-glass tint used on membership cards */
+  .glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--hairline-dark);
+  }
+
+  /* Amber gradient text for hero accent words */
+  .text-gradient-accent {
+    background: linear-gradient(120deg, var(--accent-pale), var(--accent) 55%, var(--accent-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ── Reduced-motion: honor OS preference fully ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide the native cursor only when the custom cursor is active (pointer devices) */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: none !important;
+  }
+}

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.obeesfitness.com/sitemap.xml
+Host: https://www.obeesfitness.com
