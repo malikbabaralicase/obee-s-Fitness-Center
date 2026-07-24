@@ -37,10 +37,17 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden bg-black"
+      className="relative flex min-h-[100svh] flex-col justify-start overflow-hidden bg-black md:justify-center"
     >
-      {/* Foreground athlete video — the section's own bg-black is the base layer */}
-      <div ref={athleteRef} className="absolute inset-0 z-[1] will-change-transform">
+      {/* Foreground athlete video — the section's own bg-black is the base layer.
+          On mobile this is a normal in-flow block stacked BELOW the text (order-2,
+          via mt-8 for breathing room), guaranteeing it can never overlap the copy
+          above it regardless of content length or device height. On desktop it
+          reverts to an absolute, full-height, right-anchored overlay. */}
+      <div
+        ref={athleteRef}
+        className="relative z-[1] order-2 mt-8 w-full will-change-transform md:absolute md:inset-0 md:order-none md:mt-0"
+      >
         <HeroAthlete />
       </div>
 

@@ -8,18 +8,21 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
  * Layer 2 — the cinematic athlete video.
  *
  * Below "md" (1024px — phones AND portrait tablets, which share a tall,
- * narrow viewport aspect) it renders as a full-width band anchored to the
- * bottom of the hero, well clear of the text above it. A tall/narrow
- * right-anchored crop at that aspect ratio would force object-cover to zoom
- * in extremely tight, showing little more than a sliver of the frame — which
- * is what caused the earlier "abstract ring" look on phones (that was
- * actually an over-zoomed crop of the dumbbell in this same video, not the
- * old sculpture).
+ * narrow viewport aspect) it renders as a normal, in-flow, full-width band
+ * that sits BELOW the text (not as an absolute overlay behind it). This is
+ * deliberate: an absolutely-positioned bottom band can collide with the
+ * text block above it whenever the section vertically centers its content
+ * (short content on a tall viewport), and a tall/narrow right-anchored crop
+ * at phone aspect ratios forces object-cover to zoom in extremely tight,
+ * showing little more than a sliver of the frame. Being a normal flow
+ * element guarantees zero overlap regardless of content length or device
+ * height.
  *
  * At "md" and up (reliably landscape: tablets-landscape, laptops, desktops)
- * it switches to the right-anchored, full-height treatment. Both variants
- * share the same edge-feathered gradient blending so the video reads as one
- * continuous cinematic scene rather than "a video pasted on a page".
+ * it switches back to the original right-anchored, full-height absolute
+ * treatment. Both variants share the same edge-feathered gradient blending
+ * so the video reads as one continuous cinematic scene rather than "a video
+ * pasted on a page".
  */
 export default function HeroAthlete() {
   const reduced = useReducedMotion();
@@ -99,7 +102,7 @@ export default function HeroAthlete() {
   return (
     <div
       ref={wrapRef}
-      className="pointer-events-none absolute inset-x-0 bottom-0 h-[44%] w-full opacity-0 will-change-transform md:inset-x-auto md:right-0 md:top-0 md:h-full md:w-[56vw] md:max-w-[1000px] lg:w-[55vw] xl:w-[52vw]"
+      className="pointer-events-none relative h-[42vh] w-full opacity-0 will-change-transform md:absolute md:right-0 md:top-0 md:h-full md:w-[56vw] md:max-w-[1000px] lg:w-[55vw] xl:w-[52vw]"
     >
       <div
         data-cursor-athlete
@@ -137,7 +140,7 @@ export default function HeroAthlete() {
         {/* Cinematic edge blending — no visible rectangular edges. */}
         <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-[36%] bg-gradient-to-r from-black to-transparent" />
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-black to-transparent" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[26%] bg-gradient-to-b from-black/65 to-transparent md:h-[16%] md:from-black/55" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-black/55 to-transparent" />
         <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-[8%] bg-gradient-to-l from-black/45 to-transparent" />
       </div>
     </div>
